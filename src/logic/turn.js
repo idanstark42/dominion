@@ -8,6 +8,7 @@ export default class Turn {
     this.coins = 0
 
     this.phase = Turn.PHASES.ACTION
+    this.modifiers = []
   }
 
   playAction (card, playerChoices) {
@@ -26,9 +27,28 @@ export default class Turn {
     card.action(this, this.player, this.game, playerChoices)
   }
 
+  change (stat, amount) {
+    this[stat] = this[stat] + amount
+  }
+
+  modifyValue (modifier) {
+    this.modifier.push(modifier)
+  }
+
   moveToBuyPhase () {
     this.requirePhase(Turn.PHASES.ACTION)
     this.phase = Turn.PHASES.BUY
+
+    // Coins calculations
+    const treasureCards = this.player.hand.filter(card => card.types.includes('treasure'))
+    const treasureValue = treasureCards.reduce((sum, card) => sum + card.coins, 0)
+
+    // Allow action cards to add or reduce coins at this point according to any condition they might need.
+    this.modifiers.forEach(modifier => {
+      treasureValue = modifier(treasureValue, treasureCards, turn, player) || treasureValue
+    })
+
+    this.coins = this.coins + treasureValue
   }
 
   requirePhase (phase) {

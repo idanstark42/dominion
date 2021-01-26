@@ -11,12 +11,20 @@ export default class Player {
 
     config.startingDeck.forEach(card => this.gain(card, 'deck'))
     this.shuffle()
+
+    this.log = []
+  }
+
+  // data
+
+  cards () {
+    return [].conect(this.deck).concat(this.hand).concat(this.discarded)
   }
 
   // Inner actions
 
   shuffle () {
-    this.deck.concat(this.discard)
+    this.deck = cards()
     this.discarded = []
     shuffle(this.deck)
   }
@@ -58,10 +66,19 @@ export default class Player {
     const card = this[source][0]
     if (conditionFunction(card)) {
       if (target === 'trash') {
-      	this.trashFromSource(source)
+      	this.trashTop(source)
       } else {
       	this[target].push(this[source].pop())
       }
+    }
+  }
+
+  move (card, source, target) {
+    if (target === 'trash') {
+      this.trash(card, source)
+    } else {
+      source.splice(source.indexOf(card), 1)
+      this[target].push(card)
     }
   }
 
@@ -76,8 +93,33 @@ export default class Player {
   	this.supply.trash.push(card)
   }
 
-  trashFromSource (source = 'hand') {
+  trashTop (source = 'hand') {
     this.supply.trash.push(this[source].pop())
   }
 
+  // End of game calculations
+
+  points () {
+    cards().reduce((vp, card) => {
+      if (card.vp instanceof Function) {
+        return sum + card.vp(this)
+      } else if (card.vp.constructor === Number) {
+        return sum + card.vp
+      }
+    })
+  }
+
+  stats () {
+    const cards = this.cards()
+    return {
+      cardsCount: cards.length,
+
+      victoryCardCounts = cards.filter(({ types }) => types.includes('victory')).length,
+      treasureCardCounts = cards.filter(({ types }) => types.includes('treasure')).length,
+      actionCardCounts = cards.filter(({ types }) => types.includes('action')).length
+
+      // More to come:
+      // # bought, # trashed, # copper/silver/gold, # estate/duchy/province/curse, # each action played, etc.
+    }
+  }
 }
