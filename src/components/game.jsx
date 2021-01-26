@@ -4,18 +4,27 @@ import Supply from './supply'
 import Dashboard from './dashboard'
 import Sidebar from './sidebar'
 
-export default class Game extends Component {
+import Game from '../logic/game'
+
+export default class GamePanel extends Component {
   constructor (props) {
-    super(props);
+    super(props)
   
-    this.state = {};
+    this.state = { }
+  }
+
+  componentDidMount () {
+    this.setState({ game: new Game() })
   }
 
   render () {
+    if (!this.state.game) {
+      return <div>Loading...</div>
+    }
     return <div className="game">
-      <Supply></Supply>
-      <Sidebar></Sidebar>
-      <Dashboard></Dashboard>
+      <Supply supply={this.state.game.supply}></Supply>
+      <Sidebar game={this.state.game}></Sidebar>
+      <Dashboard player={this.state.game.players[0]}></Dashboard>
     </div>
   }
 }

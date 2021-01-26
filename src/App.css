@@ -1,8 +1,21 @@
 .game {
+  box-sizing: border-box;
   display: grid;
   height: 100vh;
   width: 100vw;
-  grid-template: auto 30% / auto 25%;
+  grid-template: auto 30% / auto 20%;
+
+  background: #1f1f1f;
+
+  grid-gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.game > * {
+  background: #2f2f2f;
+  border: 1px solid #0f0f0f;
+  border-radius: 3px;
+  box-shadow: 1px 1px 1px 1px; 
 }
 
 .dashboard {

@@ -11,3 +11,9 @@ export default class Card extends Component {
     return <div className="card"></div>
   }
 }
+
+Card.Closed = class CloseCard extends Card {
+  render () {
+    return <div className="card"></div>
+  }	
+}
