@@ -11,6 +11,19 @@ export default class Turn {
     this.modifiers = []
   }
 
+  async next (allowPlayerChoice, end) {
+    if (this.actions === 0 || this.player.hand.filter(card => card.types.includes('action')).length === 0) { // No more actions, go to buy phase
+      this.moveToBuyPhase()
+      const cards = await allowPlayerChoice('purchase')
+      cards.forEach(card => this.player.gain(card))
+      await end()
+    }
+
+    const card = await allowPlayerChoice('cardInHand:type=action')
+    const playerChoices = await card.playerChoices.map(choice => allowPlayerChoice(choice))
+    this.playAction(card, playerChoices)
+  }
+
   playAction (card, playerChoices) {
     this.requirePhase(Turn.PHASES.ACTION)
 
@@ -19,10 +32,6 @@ export default class Turn {
     if (card.actions) { this.actions  += card.actions }
 
     this.actions = this.actions - 1
-
-    if (this.actions === 0) { // No more actions, go to buy phase
-      this.moveToBuyPhase()
-    }
 
     card.action(this, this.player, this.game, playerChoices)
   }
@@ -45,7 +54,7 @@ export default class Turn {
 
     // Allow action cards to add or reduce coins at this point according to any condition they might need.
     this.modifiers.forEach(modifier => {
-      treasureValue = modifier(treasureValue, treasureCards, turn, player) || treasureValue
+      treasureValue = modifier(treasureValue, treasureCards, this, this.player) || treasureValue
     })
 
     this.coins = this.coins + treasureValue

@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
 
+import config from '../config'
+
+import Pile from './pile'
+
 export default class Supply extends Component {
   constructor (props) {
     super(props);
@@ -7,7 +11,26 @@ export default class Supply extends Component {
     this.state = {};
   }
 
+  componentDidMount () {
+
+    const supply = this.props.supply
+
+    const actionsInRow = supply.actions.length / config.actionRows
+    const rows = config.constantRows.map(rowConfig => Object.keys(supply.piles).filter(pileName => rowConfig.includes(pileName)).map(key => supply.piles[key]))
+      .concat([0, actionsInRow].map(startingIndex => Array.from(supply.actions).splice(startingIndex, actionsInRow)))
+
+    this.setState({ rows })
+  }
+
   render () {
-    return <div className="supply"></div>
+    if (!this.state.rows) {
+      return <div></div>
+    }
+
+    return <div className="supply">
+      {this.state.rows.map((row, rowIndex) => <div className="row" key={rowIndex.toString()}>
+        {row.map((pile, pileIndex) => <Pile key={pileIndex.toString()} cards={pile} open={true} />)}
+      </div>)}
+    </div>
   }
 }

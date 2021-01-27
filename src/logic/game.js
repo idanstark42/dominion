@@ -3,10 +3,6 @@
  * // @players is the amount of players. Default to 2
  * // @actions is the action cards for this game. If not givven generated randomly
  * const game = new Game(player, actions)
- * 
- * // To get the next turn:
- * const turn = game.next()
- * 
  */
 
 import Player from './player'
@@ -20,9 +16,18 @@ export default class Game {
     this.nextPlayerIndex = Math.floor(Math.random() * players)
   }
 
-  next () {
-    const player = this.players[this.nextPlayerIndex]
-    this.nextPlayerIndex = this.nextPlayerIndex + 1
-    return new Turn(player, this)
+  async next (allowPlayerChoice) {
+    if (this.turn) {
+      await this.turn.next(allowPlayerChoice, () => this.end())
+    } else {
+      const player = this.players[this.nextPlayerIndex]
+      this.nextPlayerIndex = this.nextPlayerIndex + 1
+      this.turn = new Turn(player, this)
+    }
+  }
+
+  async end () {
+    this.turn = null
+    await this.next()
   }
 }

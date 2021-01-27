@@ -15,6 +15,8 @@ export default class Supply {
       this.actions = getRandom(cards.actions, config.actionsCount).map(generatePile)
     }
 
+    this.actions = this.actions.sort((action1, action2) => action1[0].cost - action2[0].cost)
+
     this.piles = [].concat(this.treasure).concat(this.victory).concat(this.actions).reduce((piles, pile) => {
       piles[pile[0].name] = pile
       return piles
@@ -32,8 +34,18 @@ export default class Supply {
   }
 }
 
-const getRandom = (arr, amount) => {
-  return arr
+const getRandom = (arr, n) => {
+    var result = new Array(n),
+        len = arr.length,
+        taken = new Array(len);
+    if (n > len)
+        throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+        var x = Math.floor(Math.random() * len);
+        result[n] = arr[x in taken ? taken[x] : x];
+        taken[x] = --len in taken ? taken[len] : len;
+    }
+    return result;
 }
 
 const generatePile = cardConfig => {

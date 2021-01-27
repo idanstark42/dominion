@@ -67,7 +67,7 @@ const cards = {
         })
       }
     },
-    { name: 'vassle',   types: ['action'], cost: 3, playerChoices: ['yesno'],
+    { name: 'vassal',   types: ['action'], cost: 3, playerChoices: ['yesno'],
       action: (turn, player, game, [yesnoChoice]) => {
         const card = player.draw()
         if (card.types.include('action')) {
@@ -95,7 +95,7 @@ const cards = {
       }
     },
     { name: 'gardens',   types: ['victory'], cost: 4, vp: player => Math.floor(player.cards().length / 10) },
-    { name: 'moneylender',   types: ['action'], cost: 4, playerChoices: ['cardInHand:name=copper']
+    { name: 'moneylender',   types: ['action'], cost: 4, playerChoices: ['cardInHand:name=copper'],
       action: (turn, player, game, [yesnoChoice]) => {
         const act = yesnoChoice()
         if (act) {
@@ -120,7 +120,7 @@ const cards = {
         
         const cardInSupplyCost = cardToTrash.cost + 2
         
-        const cardToGain = cardInSupply(cardInSupplyCost)
+        const cardToGain = cardInSupplyChoice(cardInSupplyCost)
         player.gain(cardToGain)
       }
     },
@@ -163,7 +163,7 @@ const cards = {
         player.draw(2)
       }
     },
-    { name: 'library',   types: ['action'], cost: 5, ['yesno']
+    { name: 'library',   types: ['action'], cost: 5, playerChoices: ['yesno'],
       action: (turn, player, game, [yesnoChoice]) => {
         while (player.hand.length < 7) {
           const card = player.draw()
@@ -195,7 +195,7 @@ const cards = {
         player.gain(cardToGain)
       }
     },
-    { name: 'sentinal',   types: ['action'], cost: 4, playerChoices: ['[trash, hand, discard, back]:param', 'order:cards=param'],
+    { name: 'sentinel',   types: ['action'], cost: 4, playerChoices: ['[trash, hand, discard, back]:param', 'order:cards=param'],
       action: (turn, player, game, [actionChoice, orderChoice]) => {
         const cards = player.draw(2)
         let returns = 0
@@ -224,7 +224,7 @@ const cards = {
         // Handle attacks
       }
     },
-    { name: 'artisian',   types: ['action'], cost: 6, playerChoices: ['cardInSupply:maxCost=5'],
+    { name: 'artisan',   types: ['action'], cost: 6, playerChoices: ['cardInSupply:maxCost=5'],
       action: (turn, player, game, [cardChoice]) => {
         const card = cardChoice()
         player.gain(card)

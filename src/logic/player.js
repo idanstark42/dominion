@@ -11,6 +11,7 @@ export default class Player {
 
     config.startingDeck.forEach(card => this.gain(card, 'deck'))
     this.shuffle()
+    this.newHand()
 
     this.log = []
   }
@@ -18,13 +19,13 @@ export default class Player {
   // data
 
   cards () {
-    return [].conect(this.deck).concat(this.hand).concat(this.discarded)
+    return [].concat(this.deck).concat(this.hand).concat(this.discarded)
   }
 
   // Inner actions
 
   shuffle () {
-    this.deck = cards()
+    this.deck = this.cards()
     this.discarded = []
     shuffle(this.deck)
   }
@@ -100,13 +101,13 @@ export default class Player {
   // End of game calculations
 
   points () {
-    cards().reduce((vp, card) => {
+    this.cards().reduce((sum, card) => {
       if (card.vp instanceof Function) {
         return sum + card.vp(this)
       } else if (card.vp.constructor === Number) {
         return sum + card.vp
       }
-    })
+    }, 0)
   }
 
   stats () {
@@ -114,9 +115,9 @@ export default class Player {
     return {
       cardsCount: cards.length,
 
-      victoryCardCounts = cards.filter(({ types }) => types.includes('victory')).length,
-      treasureCardCounts = cards.filter(({ types }) => types.includes('treasure')).length,
-      actionCardCounts = cards.filter(({ types }) => types.includes('action')).length
+      victoryCardCounts: cards.filter(({ types }) => types.includes('victory')).length,
+      treasureCardCounts: cards.filter(({ types }) => types.includes('treasure')).length,
+      actionCardCounts: cards.filter(({ types }) => types.includes('action')).length
 
       // More to come:
       // # bought, # trashed, # copper/silver/gold, # estate/duchy/province/curse, # each action played, etc.

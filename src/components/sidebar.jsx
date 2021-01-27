@@ -2,12 +2,14 @@ import React, { Component } from 'react'
 
 export default class Sidebar extends Component {
   constructor (props) {
-    super(props);
+    super(props)
   
-    this.state = {};
+    this.state = {}
   }
 
   render () {
-    return <div className="sidebar"></div>
+    return <div className="sidebar">
+      {this.props.game.players.map((player, index) => <div className="player" key={index}></div>)}
+    </div>
   }
 }
