@@ -12,51 +12,51 @@ const cards = {
   ],
   actions: [
     // 2 coins cards
-    { name: 'cellar',   types: ['action'], cost: 2, playerChoices: ['cardsInHand'],
-      action: (turn, player, game, [cardsChoice]) => {
-        const cards = cardsChoice()
+    { name: 'cellar',   types: ['action'], cost: 2,
+      action: async ({ player, choose }) => {
+        const cards = await choose.cards('hand')
         cards.forEach(card => player.discard(card))
         player.draw(cards.length)
       }
     },
-    { name: 'chapel',   types: ['action'], cost: 2, playerChoices: ['cardsInHand:maxAmount=4'],
-      action: (turn, player, game, [cardsChoice]) => {
-        const cards = cardsChoice()
+    { name: 'chapel',   types: ['action'], cost: 2,
+      action: async ({ player, choose }) => {
+        const cards = await choose.cards('hand', { maxAmount: 4 })
         cards.forEach(card => player.trash(card))
       }
     },
     { name: 'moat',   types: ['action', 'reaction'], cost: 2, 
-      reaction: (turn, player, game, action) => {
+      reaction: async ({ player, action }) => {
         action.ignore(player)
       },
-      action: (turn, player, game, [cards]) => {
+      action: async ({ player }) => {
         player.draw(2)
       }
     },
     // 3 coins cards
     { name: 'village',   types: ['action'], cost: 3,
-      action: (turn, player) => {
+      action: async ({ turn, player }) => {
         turn.change('actions', 2)
         player.draw()
       }
     },
-    { name: 'workshop',   types: ['action'], cost: 3, playerChoices: ['cardInSupply:maxCost=4'],
-      action: (turn, player, game, [cardChoice]) => {
-        const card = cardChoice()
+    { name: 'workshop',   types: ['action'], cost: 3,
+      action: async ({ player, choose }) => {
+        const card = await choose.card('supply', { maxCost: 4 })
         player.gain(card)
       }
     },
-    { name: 'harbinger',   types: ['action'], cost: 3, playerChoices: ['cardInDiscard'],
-      action: (turn, player, game, [cardChoice]) => {
+    { name: 'harbinger',   types: ['action'], cost: 3,
+      action: async ({ player, turn, choose }) => {
         player.draw()
         turn.change('actions', 1)
 
-        const card = cardChoice()
+        const card = await choose.card('discarded')
         player.move(card, 'discarded', 'deck')
       }
     },
     { name: 'merchant',   types: ['action'], cost: 3,
-      action: (turn, player) => {
+      action: async ({ turn, player }) => {
         player.draw()
         turn.change('actions', 1)
 
@@ -67,11 +67,11 @@ const cards = {
         })
       }
     },
-    { name: 'vassal',   types: ['action'], cost: 3, playerChoices: ['yesno'],
-      action: (turn, player, game, [yesnoChoice]) => {
+    { name: 'vassal',   types: ['action'], cost: 3,
+      action: async ({ player, choose }) => {
         const card = player.draw()
         if (card.types.include('action')) {
-          const useCard = yesnoChoice(card)
+          const useCard = await choose.yesno(card)
           if (useCard) {
             return card
           }
@@ -81,94 +81,94 @@ const cards = {
       }
     },
     { name: 'beurocrat',   types: ['action', 'attack'], cost: 4,
-      action: (turn, player, game, [yesnoChoice]) => {
+      action: async ({ player, game }) => {
         player.gain('silver')
 
-        // Handle attacks
+        // TODO Handle attacks
       }
     },
     { name: 'militia',   types: ['action', 'attack'], cost: 4,
-      action: (turn, player, game, [yesnoChoice]) => {
-        turn.chance('coins', 2)
+      action: async ({ turn, game }) => {
+        turn.change('coins', 2)
 
-        // Handle attacks
+        // TODO Handle attacks
       }
     },
     { name: 'gardens',   types: ['victory'], cost: 4, vp: player => Math.floor(player.cards().length / 10) },
-    { name: 'moneylender',   types: ['action'], cost: 4, playerChoices: ['cardInHand:name=copper'],
-      action: (turn, player, game, [yesnoChoice]) => {
-        const act = yesnoChoice()
-        if (act) {
-          player.trash(player.hand.find(card => card.name === 'copper'))
+    { name: 'moneylender',   types: ['action'], cost: 4,
+      action: async ({ turn, player, choose }) => {
+        const card = await choose.card('hand', { name: 'copper', nullable: true })
+        if (card) {
+          player.trash(card)
           turn.change('coins', 3)          
         }
       }
     },
-    { name: 'poacher',   types: ['action'], cost: 4, playerChoices: ['cardsInHand:amount=EmptySupplyPiles'],
-      action: (turn, player, game, [cardsChoice]) => {
+    { name: 'poacher',   types: ['action'], cost: 4,
+      action: async ({ turn, player, game, choose }) => {
         turn.change('actions', 1)
         turn.change('coins', 1)
         player.draw()
-        const cards = cardsChoice()
+        const cards = await choose.cards('hand', { amount: game.supply.piles.filter(pile => pile.length === 0).length })
         cards.forEach(card => player.discard(card))
       }
     },
-    { name: 'remodel',   types: ['action'], cost: 4, playerChoices: ['cardInHand', 'cardInSupply:maxCost=param'],
-      action: (turn, player, game, [cardInHandChoice, cardInSupplyChoice]) => {
-        const cardToTrash = cardInHandChoice()
+    { name: 'remodel',   types: ['action'], cost: 4,
+      action: async ({ player, choose }) => {
+        const cardToTrash = await choose.card('hand')
         player.trash(cardToTrash)
         
-        const cardInSupplyCost = cardToTrash.cost + 2
-        
-        const cardToGain = cardInSupplyChoice(cardInSupplyCost)
+        const cardToGain = await choose.card('supply', { maxCost: cardToTrash.cost + 2 })
         player.gain(cardToGain)
       }
     },
     { name: 'smithy',   types: ['action'], cost: 4,
-      action: (turn, player, game, [cardInHandChoice, cardInSupplyChoice]) => {
+      action: async ({ player }) => {
         player.draw(3)
       }
     },
-    { name: 'throneroom',   types: ['action'], cost: 4, playerChoices: ['cardInHand:type=action'],
-      action: (turn, player, game, [cardChoice]) => {
-        // WTF do I do here?!
+    { name: 'throneroom',   types: ['action'], cost: 4,
+      action: async ({ player, turn, choose }) => {
+        const actionCard = await choose.card('hand', { type: 'action' })
+        turn.playAction(actionCard, choose, false)
+        turn.playAction(actionCard, choose, false)
       }
     },
     { name: 'bandit',   types: ['action', 'attack'], cost: 5,
-      action: (turn, player, game) => {
+      action: async ({ player }) => {
         player.gain('gold')
 
-        // Handle attacks
+        // TODO Handle attacks
       }
     },
     { name: 'councilroom',   types: ['action'], cost: 5,
-      action: (turn, player, game) => {
+      action: async ({ player, turn }) => {
         player.draw(4)
         turn.change('buys', 1)
         
-        // Not an attack, but handle this too
+        // TODO Not an attack, but handle this too
       }
     },
     { name: 'festival',   types: ['action'], cost: 5,
-      action: (turn, player, game) => {
+      action: async ({ turn }) => {
         turn.change('actions', 2)
         turn.change('buys', 1)
         turn.change('coins', 2)
       }
     },
     { name: 'labratory',   types: ['action'], cost: 5,
-      action: (turn, player, game) => {
+      action: async ({ turn, player }) => {
         turn.change('actions', 1)
         turn.change('coins', 2)
         player.draw(2)
       }
     },
-    { name: 'library',   types: ['action'], cost: 5, playerChoices: ['yesno'],
-      action: (turn, player, game, [yesnoChoice]) => {
+    { name: 'library',   types: ['action'], cost: 5,
+      action: async ({ player, choose }) => {
         while (player.hand.length < 7) {
           const card = player.draw()
           if (card.types.includes('action')) {
-            const discard = yesnoChoice()
+            const discard = await choose.yesno(card)
             if (discard) {
               player.discard(card)
             }
@@ -176,32 +176,30 @@ const cards = {
         }
       }
     },
-    { name: 'labratory',   types: ['action'], cost: 5,
-      action: (turn, player, game) => {
+    { name: 'market',   types: ['action'], cost: 5,
+      action: async ({ turn, player }) => {
         turn.change('actions', 1)
         turn.change('buys', 1)
         turn.change('coins', 1)
         player.draw(1)
       }
     },
-    { name: 'remodel',   types: ['action'], cost: 4, playerChoices: ['cardInHand:type=treasure', 'cardInSupply:maxCost=param,type=treasure'],
-      action: (turn, player, game, [cardInHandChoice, cardInSupplyChoice]) => {
-        const cardToTrash = cardInHandChoice()
+    { name: 'mine',   types: ['action'], cost: 4,
+      action: async ({ player, choose }) => {
+        const cardToTrash = await choose.card('hand', { type: 'treasure' })
         player.trash(cardToTrash)
         
-        const cardInSupplyCost = cardToTrash.cost + 2
-        
-        const cardToGain = cardInSupplyChoice(cardInSupplyCost)
+        const cardToGain = await choose.card('supply', { maxCost: cardToTrash.cost + 3, type: 'treasure' })
         player.gain(cardToGain)
       }
     },
-    { name: 'sentinel',   types: ['action'], cost: 4, playerChoices: ['[trash, hand, discard, back]:param', 'order:cards=param'],
-      action: (turn, player, game, [actionChoice, orderChoice]) => {
+    { name: 'sentinel',   types: ['action'], cost: 4,
+      action: async ({ player, choose }) => {
         const cards = player.draw(2)
         let returns = 0
 
-        cards.forEach(card => {
-          const choice = actionChoice(card)
+        for (let card of cards) {
+          const choice = await choose.move({ options: ['trash', 'hand', 'discard', 'deck'], card })
           if (choice === 'trash') {
             player.trash(card)
           } else if (choice === 'discard') {
@@ -210,23 +208,24 @@ const cards = {
             player.return(card)
             returns = returns + 1
           }
-        })
+        }
 
         if (returns > 1) {
-          orderChoice(cards)
+          await choose.order({ cards })
+          // TODO order the cards in the deck
         }
       }
     },
     { name: 'witch',   types: ['action', 'attack'], cost: 5,
-      action: (turn, player, game) => {
+      action: async ({ player, game }) => {
         player.draw(2)
 
-        // Handle attacks
+        // TODO Handle attacks
       }
     },
-    { name: 'artisan',   types: ['action'], cost: 6, playerChoices: ['cardInSupply:maxCost=5'],
-      action: (turn, player, game, [cardChoice]) => {
-        const card = cardChoice()
+    { name: 'artisan',   types: ['action'], cost: 6,
+      action: async ({ player, choose }) => {
+        const card = await choose.card('supply', { maxCost: 5 })
         player.gain(card)
         player.return()
       }

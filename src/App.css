@@ -40,9 +40,24 @@
   justify-content: space-between;
 }
 
+.dashboard .status {
+  margin-left: 1rem;
+  display: grid;
+  grid-template: auto auto auto / 3rem 3rem;
+  font-size: 2rem;
+  color: gold;
+}
+
+.dashboard .status > .cell {
+  text-align: center;
+  width: 100%;
+}
+
 .dashboard .hand {
   height: 100%;
+  width: 100%;
   display: flex;
+  justify-content: center;
 }
 
 .dashboard .hand .card {

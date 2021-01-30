@@ -106,6 +106,8 @@ export default class Player {
         return sum + card.vp(this)
       } else if (card.vp.constructor === Number) {
         return sum + card.vp
+      } else {
+        return sum
       }
     }, 0)
   }

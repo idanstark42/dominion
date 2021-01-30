@@ -16,18 +16,17 @@ export default class Game {
     this.nextPlayerIndex = Math.floor(Math.random() * players)
   }
 
-  async next (allowPlayerChoice) {
-    if (this.turn) {
-      await this.turn.next(allowPlayerChoice, () => this.end())
-    } else {
+  async next (choose) {
+    if (!this.turn) {
       const player = this.players[this.nextPlayerIndex]
-      this.nextPlayerIndex = this.nextPlayerIndex + 1
+      this.nextPlayerIndex = (this.nextPlayerIndex + 1) % this.players.length
       this.turn = new Turn(player, this)
     }
+    
+    await this.turn.next(choose, () => this.end())
   }
 
-  async end () {
+  end () {
     this.turn = null
-    await this.next()
   }
 }
