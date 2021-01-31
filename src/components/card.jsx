@@ -14,7 +14,7 @@ export default class Card extends Component {
 
 Card.Closed = class CloseCard extends Card {
   render () {
-    return <div className="closed card" onClick={this.props.onClick}></div>
+    return <div className="closed card" style={{ backgroundImage: `url(./images/cards/back.jpg)` }} onClick={this.props.onClick}></div>
   }
 }
 
