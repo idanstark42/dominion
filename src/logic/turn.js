@@ -18,8 +18,9 @@ export default class Turn {
   async next (choose, end) {
     if (this.actions === 0 || this.player.hand.filter(card => card.types.includes('action')).length === 0) { // No more actions, go to buy phase
       this.moveToBuyPhase()
-      const cards = await choose.buy(this.coins, this.buys)
+      const cards = await choose.buy(this.currentCoins(), this.buys)
       cards.forEach(card => this.player.gain(card))
+      this.player.newHand()
       end()
     } else {
       const card = await choose.card('hand', { type: 'action' })
@@ -63,7 +64,6 @@ export default class Turn {
   moveToBuyPhase () {
     this.requirePhase(Turn.PHASES.ACTION)
     this.phase = Turn.PHASES.BUY
-    this.coins = this.currentCoins()
   }
 
   requirePhase (phase) {

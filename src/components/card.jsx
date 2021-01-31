@@ -8,18 +8,18 @@ export default class Card extends Component {
   }
 
   render () {
-    return <div className={`${this.props.card.name} card`} style={{ backgroundImage: `url(./images/cards/${this.props.card.name}.png)` }}></div>
+    return <div className={`${this.props.card.name} card`} style={{ backgroundImage: `url(./images/cards/${this.props.card.name}.png)` }} onClick={this.props.onClick}></div>
   }
 }
 
 Card.Closed = class CloseCard extends Card {
   render () {
-    return <div className="closed card"></div>
+    return <div className="closed card" onClick={this.props.onClick}></div>
   }
 }
 
 Card.Empty = class CloseCard extends Card {
   render () {
-    return <div className="empty card"></div>
+    return <div className="empty card" onClick={this.props.onClick}></div>
   }
 }

@@ -26,6 +26,8 @@
 
   height: 100%;
   width: 9rem;
+
+  cursor: pointer;
 }
 
 .card.closed {
@@ -102,4 +104,22 @@
   display: none;
   background: #000000a1;
   z-index: 1;
+}
+
+.button.cell {
+  background: gold;
+  grid-column-start: 1;
+  grid-column-end: 3;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  color: #1f1f1f;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.disabled.button.cell {
+  pointer-events: none;
+  opacity: 0.5;
 }

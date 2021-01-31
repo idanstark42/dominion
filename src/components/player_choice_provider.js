@@ -31,17 +31,30 @@ export default class PlayerChoiceProvider extends Component {
     return Boolean(this.state.choice)
   }
 
-  handleCardClick (source, handleCardClick) {
+  handleEvent (event) {
+    if (this.choiceRef && this.choiceRef.current) {
+      this.choiceRef.current.handleEvent(event)
+    }
+  }
 
+  valid () {
+    return this.choiceRef && this.choiceRef.current && this.choiceRef.current.valid()
+  }
+
+  doneAction () {
+    if (this.choiceRef && this.choiceRef.current) {
+      return this.choiceRef.current.doneAction
+    } else {
+      return 'No action'
+    }
   }
 
   render () {
     if (!this.choosing()) {
       return null
     }
-    console.log(this.state.choice, this.state.parameters)
     const Choice = CHOICES.find(choice => camelCase(choice.name) === this.state.choice)
     
-    return <Choice ref={this.choiceRef}></Choice>
+    return <Choice ref={this.choiceRef} parameters={this.state.parameters}></Choice>
   }
 }

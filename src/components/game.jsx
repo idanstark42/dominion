@@ -29,12 +29,13 @@ export default class GamePanel extends Component {
     // After each event in the game, we sync. Also after each choice.
   }
 
-  handleCardClick (cardClickEvent) {
+  handleEvent (event) {
     if (this.playerChoiceProvider.current  && this.playerChoiceProvider.current.choosing()) {
-      this.playerChoiceProvider.current.handleCardClick(cardClickEvent)
+      this.playerChoiceProvider.current.handleEvent(event)
     } else {
       // Show card in big mode, width explanation
     }
+    this.forceUpdate()
   }
 
   render () {
@@ -44,9 +45,13 @@ export default class GamePanel extends Component {
     console.log('game rendering')
     return <div className="game">
       <PlayerChoiceProvider ref={this.playerChoiceProvider}/>
-      <Supply supply={this.state.game.supply} handleCardClick={cardClickEvent => this.handleCardClick(Object.assign({ source: 'supply' }, cardClickEvent))}></Supply>
+      <Supply supply={this.state.game.supply} handleEvent={event => this.handleEvent(event)}></Supply>
       <Sidebar game={this.state.game}></Sidebar>
-      <Dashboard player={this.state.game.players[0]} turn={this.state.game.turn} handleCardClick={cardClickEvent => this.handleCardClick(Object.assign({ source: 'player' }, cardClickEvent))}></Dashboard>
+      <Dashboard player={this.state.game.players[0]} turn={this.state.game.turn}
+        handleEvent={event => this.handleEvent(event)}
+        valid={this.playerChoiceProvider.current && this.playerChoiceProvider.current.valid()}
+        doneAction={this.playerChoiceProvider.current ? this.playerChoiceProvider.current.doneAction() : 'No action'}>
+      </Dashboard>
     </div>
   }
 }

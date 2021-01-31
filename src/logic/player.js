@@ -31,10 +31,10 @@ export default class Player {
   }
 
   newHand () {
-    this.hand.forEach(cardInHand => this.discard(cardInHand))
-    for(let i = 0; i < config.cardsInHand; i++) {
-      this.draw()
+    while (this.hand.length > 0) {
+      this.discard(this.hand[0])
     }
+    this.draw(config.cardsInHand)
   }
 
   draw (count=1) {
@@ -86,7 +86,7 @@ export default class Player {
   // Outer actions
 
   gain (card, target = 'discarded') {
-  	this[target].push(this.supply.takeCard(card))
+  	this[target].push(this.supply.takeCard(card.constructor.name === 'Card' ? card.name : String(card)))
   }
 
   trash (card, source = 'hand') {

@@ -2,6 +2,7 @@ import React from 'react'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoins, faBolt, faCartPlus } from '@fortawesome/free-solid-svg-icons'
+import Font from 'react-font'
 
 import Pile from './pile'
 import Card from './card'
@@ -17,12 +18,12 @@ export default function Dashboard (props) {
         <div className="cell">{props.turn.actions}</div>
         <div className="cell"><FontAwesomeIcon icon={faCartPlus} /></div>
         <div className="cell">{props.turn.buys}</div>
+        <div className={`${props.valid ? '' : 'disabled'} button cell`} onClick={() => props.handleEvent({ type: 'done' })}><Font family="Amatic SC">{props.doneAction && props.doneAction}</Font></div>
       </div>
       : <div className="status"></div>}
     <div className="hand">
       {props.player.hand.map((card, index) => <Card card={card} key={index} />)}
     </div>
-    <div className="actions"></div>
     <Pile cards={props.player.discarded} open={true}/>
   </div>
 }
