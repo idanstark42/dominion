@@ -2,8 +2,9 @@ import React, { Component, createRef } from 'react'
 import { camelCase } from 'change-case'
 
 import Buy from './choices/buy'
+import Cards from './choices/cards'
 
-const CHOICES = [Buy]
+const CHOICES = [Buy, Cards]
 
 export default class PlayerChoiceProvider extends Component {
   constructor(props) {
@@ -24,7 +25,12 @@ export default class PlayerChoiceProvider extends Component {
 
   async choose (choice, parameters) {
     await this.setState({ choice, parameters })
-    return await this.choiceRef.current.waitForResult()
+    if (this.props.onChoosing) {
+      this.props.onChoosing()
+    }
+    const result = await this.choiceRef.current.waitForResult()
+    await this.setState({ choice: null, parameters: null })
+    return result
   }
 
   choosing () {
@@ -43,7 +49,7 @@ export default class PlayerChoiceProvider extends Component {
 
   doneAction () {
     if (this.choiceRef && this.choiceRef.current) {
-      return this.choiceRef.current.doneAction
+      return this.choiceRef.current.doneAction || 'No action'
     } else {
       return 'No action'
     }

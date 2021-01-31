@@ -24,9 +24,12 @@ export default class Player {
 
   // Inner actions
 
-  shuffle () {
-    this.deck = this.cards()
+  shuffle (takeFromHand=true) {
+    this.deck = takeFromHand ? this.cards() : ([].concat(this.discarded).concat(this.deck))
     this.discarded = []
+    if (takeFromHand) {
+      this.hand = []
+    }
     shuffle(this.deck)
   }
 
@@ -38,6 +41,10 @@ export default class Player {
   }
 
   draw (count=1) {
+    if (this.deck.length === 0) {
+      this.shuffle(false)
+    }
+
     if (count === 1) {
       const card = this.deck.pop()
       this.hand.push(card)
@@ -45,8 +52,7 @@ export default class Player {
     } else {
       const cards = []
       for (let i = 0; i < count; i++) {
-        const card = this.deck.pop()
-        this.hand.push(card)
+        const card = this.draw()
         cards.push(card)
       }
       return cards

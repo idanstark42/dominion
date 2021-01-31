@@ -1,32 +1,55 @@
-/**
- * The Game API:
- * // @players is the amount of players. Default to 2
- * // @actions is the action cards for this game. If not givven generated randomly
- * const game = new Game(player, actions)
- */
-
 import Player from './player'
 import Supply from './supply'
 import Turn from './turn'
 
 export default class Game {
-  constructor (players=2, actions=null) {
+  constructor ({ players=1, actions=null, onUpdate=false }) {
     this.supply = new Supply(actions)
     this.players = Array(players).fill(new Player(this.supply))
+    this.onUpdate = onUpdate
+
     this.nextPlayerIndex = Math.floor(Math.random() * players)
+    this.localPlayer = this.players[0]
   }
 
   async next (choose) {
     if (!this.turn) {
-      const player = this.players[this.nextPlayerIndex]
-      this.nextPlayerIndex = (this.nextPlayerIndex + 1) % this.players.length
-      this.turn = new Turn(player, this)
+      this.nextTurn()
     }
-    
-    await this.turn.next(choose, () => this.end())
+
+    await this.turn.run(choose)
+    this.nextTurn()
+    await this.push() // Upon synchronization data recieving, if the turn is mine, the I would run it.
   }
 
-  end () {
-    this.turn = null
+  async push () {
+    // TODO
+    await this.pull()
+  }
+
+  async pull () {
+    // TODO
+
+    if (this.onUpdate) {
+      this.onUpdate()
+    }
+  }
+
+  myTurn () {
+    return this.localPlayer === this.turn.player
+  }
+
+  nextTurn () {
+    this.turn = new Turn(this.players[this.nextPlayerIndex])
+    this.nextPlayerIndex = (this.nextPlayerIndex + 1) % this.players.length
+    return this.turn
+  }
+
+  over () {
+    return this.supply.emptyPiles() >= 3 || this.supply.piles.province.length === 0
+  }
+
+  stats () {
+    return this.players.map(player => player.stats())
   }
 }

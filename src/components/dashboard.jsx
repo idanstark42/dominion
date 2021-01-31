@@ -4,6 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoins, faBolt, faCartPlus } from '@fortawesome/free-solid-svg-icons'
 import Font from 'react-font'
 
+import { translate } from '../helpers/i18n'
+
 import Pile from './pile'
 import Card from './card'
 
@@ -18,7 +20,7 @@ export default function Dashboard (props) {
         <div className="cell">{props.turn.actions}</div>
         <div className="cell"><FontAwesomeIcon icon={faCartPlus} /></div>
         <div className="cell">{props.turn.buys}</div>
-        <div className={`${props.valid ? '' : 'disabled'} button cell`} onClick={() => props.handleEvent({ type: 'done' })}><Font family="Amatic SC">{props.doneAction && props.doneAction}</Font></div>
+        <div className={`${props.valid ? '' : 'disabled'} ${props.doneAction === 'No action' ? 'hidden' : ''} button cell`} onClick={() => props.handleEvent({ type: 'done' })}><Font family="Amatic SC">{translate(props.doneAction)}</Font></div>
       </div>
       : <div className="status"></div>}
     <div className="hand">

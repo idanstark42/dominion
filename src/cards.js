@@ -42,7 +42,7 @@ const cards = {
     },
     { name: 'workshop',   types: ['action'], cost: 3,
       action: async ({ player, choose }) => {
-        const card = await choose.card('supply', { maxCost: 4 })
+        const card = await choose.cards('supply', { amount: 1, maxCost: 4 })
         player.gain(card)
       }
     },
@@ -51,7 +51,7 @@ const cards = {
         player.draw()
         turn.change('actions', 1)
 
-        const card = await choose.card('discarded')
+        const card = await choose.cards('discarded', { amount: 1 })
         player.move(card, 'discarded', 'deck')
       }
     },
@@ -94,10 +94,10 @@ const cards = {
         // TODO Handle attacks
       }
     },
-    { name: 'gardens',   types: ['victory'], cost: 4, vp: player => Math.floor(player.cards().length / 10) },
+    { name: 'gardens',   types: ['victory'], cost: 4, vp: player => Math.floor(player.cards().length / 10), amount: 12 },
     { name: 'moneylender',   types: ['action'], cost: 4,
       action: async ({ turn, player, choose }) => {
-        const card = await choose.card('hand', { name: 'copper', nullable: true })
+        const card = await choose.cards('hand', { amount: 1, name: 'copper', nullable: true })
         if (card) {
           player.trash(card)
           turn.change('coins', 3)          
@@ -109,16 +109,16 @@ const cards = {
         turn.change('actions', 1)
         turn.change('coins', 1)
         player.draw()
-        const cards = await choose.cards('hand', { amount: game.supply.piles.filter(pile => pile.length === 0).length })
+        const cards = await choose.cards('hand', { amount: game.supply.emptyPiles() })
         cards.forEach(card => player.discard(card))
       }
     },
     { name: 'remodel',   types: ['action'], cost: 4,
       action: async ({ player, choose }) => {
-        const cardToTrash = await choose.card('hand')
+        const cardToTrash = await choose.cards('hand', { amount: 1 })
         player.trash(cardToTrash)
         
-        const cardToGain = await choose.card('supply', { maxCost: cardToTrash.cost + 2 })
+        const cardToGain = await choose.cards('supply', { amount: 1, maxCost: cardToTrash.cost + 2 })
         player.gain(cardToGain)
       }
     },
@@ -129,7 +129,7 @@ const cards = {
     },
     { name: 'throneroom',   types: ['action'], cost: 4,
       action: async ({ player, turn, choose }) => {
-        const actionCard = await choose.card('hand', { type: 'action' })
+        const actionCard = await choose.cards('hand', { amount: 1, type: 'action' })
         turn.playAction(actionCard, choose, false)
         turn.playAction(actionCard, choose, false)
       }
@@ -186,10 +186,10 @@ const cards = {
     },
     { name: 'mine',   types: ['action'], cost: 4,
       action: async ({ player, choose }) => {
-        const cardToTrash = await choose.card('hand', { type: 'treasure' })
+        const cardToTrash = await choose.cards('hand', { amount: 1, type: 'treasure' })
         player.trash(cardToTrash)
         
-        const cardToGain = await choose.card('supply', { maxCost: cardToTrash.cost + 3, type: 'treasure' })
+        const cardToGain = await choose.cards('supply', { amount: 1, maxCost: cardToTrash.cost + 3, type: 'treasure' })
         player.gain(cardToGain)
       }
     },
@@ -225,7 +225,7 @@ const cards = {
     },
     { name: 'artisan',   types: ['action'], cost: 6,
       action: async ({ player, choose }) => {
-        const card = await choose.card('supply', { maxCost: 5 })
+        const card = await choose.cards('supply', { amount: 1, maxCost: 5 })
         player.gain(card)
         player.return()
       }

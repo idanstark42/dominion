@@ -4,10 +4,10 @@ const config = {
   startingDeck: ['copper', 'copper', 'copper', 'copper', 'copper', 'copper', 'copper', 'estate', 'estate', 'estate'],
   
   constantRows: [
-  	['curse', 'estate', 'duchy', 'province'],
-  	['copper', 'silver', 'gold']
+  	['curse', 'estate', 'duchy', 'province', 'copper', 'silver', 'gold']
   ],
-  actionRows: 2
+  actionRows: 2,
+  defaultSupplyAmount: 10
 }
 
 export default config

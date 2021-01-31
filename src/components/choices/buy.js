@@ -5,11 +5,12 @@ export default class Buy extends Cards {
     super(props)
 
     this.source = 'supply'
-    this.doneAction = 'Buy'
+    this.doneAction = 'buy'
   }
 
   valid () {
     const [coins, buys] = this.props.parameters
+    console.log('validity')
     return this.cards.length <= buys && this.cards.reduce((sum, { cost }) => sum + cost, 0) <= coins
   }
 }

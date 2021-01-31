@@ -75,7 +75,6 @@
 
 .supply .row {
   display: flex;
-  justify-content: center;
   height: 100%;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
@@ -84,7 +83,7 @@
 .supply .card {
   margin-right: 0.5rem;
   margin-left: 0.5rem;
-  width: 5rem;
+  width: 6.4rem;
 }
 
 .sidebar > .player {
@@ -122,4 +121,8 @@
 .disabled.button.cell {
   pointer-events: none;
   opacity: 0.5;
+}
+
+.hidden {
+  display: none;
 }

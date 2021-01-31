@@ -12,25 +12,26 @@ export default class Turn {
     this.playerActions = []
   }
 
-  // next - perform the next step of the turn.
-  // If it's the action phase - perform an action
-  // If the action phase is over, move to buy phase and purchase. 
-  async next (choose, end) {
-    if (this.actions === 0 || this.player.hand.filter(card => card.types.includes('action')).length === 0) { // No more actions, go to buy phase
-      this.moveToBuyPhase()
-      const cards = await choose.buy(this.currentCoins(), this.buys)
-      cards.forEach(card => this.player.gain(card))
-      this.player.newHand()
-      end()
-    } else {
-      const card = await choose.card('hand', { type: 'action' })
+  async run (choose) {
+    await this.actionPhase(choose)
+    await this.buyPhase(choose)
+    this.player.newHand()
+  }
+
+  async actionPhase (choose) {
+    while (this.actions > 0 && this.player.hand.some(card => card.types.includes('action'))) {
+      const card = await choose.cards('hand', { amount: 1, type: 'action' })
       this.playAction(card, choose)
     }
   }
 
-  async playAction (card, choose, reduceActionsCount=true) {
-    this.requirePhase(Turn.PHASES.ACTION)
+  async buyPhase (choose) {
+    this.phase = Turn.PHASES.BUY
+    const cards = await choose.buy(this.currentCoins(), this.buys)
+    cards.forEach(card => this.player.gain(card))
+  }
 
+  async playAction (card, choose, reduceActionsCount=true) {
     this.turn.playerActions.push(card)
 
     if (reduceActionsCount) {
@@ -59,17 +60,6 @@ export default class Turn {
     })
 
     return this.coins + treasureValue
-  }
-
-  moveToBuyPhase () {
-    this.requirePhase(Turn.PHASES.ACTION)
-    this.phase = Turn.PHASES.BUY
-  }
-
-  requirePhase (phase) {
-    if (!this.phase === phase) {
-      throw new Error('Phase missmatch.')
-    }
   }
 }
 

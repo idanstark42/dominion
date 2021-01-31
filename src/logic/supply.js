@@ -26,11 +26,16 @@ export default class Supply {
   }
 
   takeCard (name) {
+    console.log('taking: ', name)
     if(this.piles[name] && this.piles[name].length > 0) {
       return this.piles[name].pop()
     } else{
       throw new Error(`No cards in pile: ${name}`)
     }
+  }
+
+  emptyPiles () {
+    return Object.values(this.piles).filter(pile => pile.length === 0).length
   }
 }
 
@@ -51,6 +56,6 @@ const getRandom = (arr, n) => {
 const generatePile = cardConfig => {
   const cardProto = Object.assign({ }, cardConfig)
   delete cardProto.amount
-  return Array(cardConfig.amount).fill(1)
+  return Array(cardConfig.amount || config.defaultSupplyAmount).fill(1)
     .map(() => new Card(cardProto))
 }

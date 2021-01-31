@@ -16,17 +16,21 @@ export default class GamePanel extends Component {
   }
 
   async componentDidMount () {
-    await this.setState({ game: new Game() })
+    await this.setState({ game: new Game({ onUpdate: () => { this.onUpdate() } }) })
 
-    setTimeout(() => {
-      this.next()
-      this.forceUpdate()
-    }, 1000) // Starting the game
+    setTimeout(() => this.next(), 1000)
   }
 
   async next () {
     await this.state.game.next(this.playerChoiceProvider.current.choose)
+    this.forceUpdate()
     // After each event in the game, we sync. Also after each choice.
+  }
+
+  onUpdate () {
+    if (this.state.game.myTurn()) {
+      this.next()
+    }
   }
 
   handleEvent (event) {
@@ -42,12 +46,12 @@ export default class GamePanel extends Component {
     if (!this.state.game) {
       return <div>Loading...</div>
     }
-    console.log('game rendering')
+    console.log('game rendering', this.playerChoiceProvider.current && this.playerChoiceProvider.current.valid())
     return <div className="game">
-      <PlayerChoiceProvider ref={this.playerChoiceProvider}/>
+      <PlayerChoiceProvider ref={this.playerChoiceProvider} onChoosing={() => this.forceUpdate()}/>
       <Supply supply={this.state.game.supply} handleEvent={event => this.handleEvent(event)}></Supply>
       <Sidebar game={this.state.game}></Sidebar>
-      <Dashboard player={this.state.game.players[0]} turn={this.state.game.turn}
+      <Dashboard player={this.state.game.localPlayer} turn={this.state.game.turn}
         handleEvent={event => this.handleEvent(event)}
         valid={this.playerChoiceProvider.current && this.playerChoiceProvider.current.valid()}
         doneAction={this.playerChoiceProvider.current ? this.playerChoiceProvider.current.doneAction() : 'No action'}>
