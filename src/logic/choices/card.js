@@ -1,10 +1,10 @@
 import Cards from './cards'
 
 export default class Card extends Cards {
-  constructor(props) {
-    super(props)
+  constructor(parameters) {
+    super(parameters)
     
-    this.filters = { type: 'action' }
+    this.filters = { amount: 1 }
   }
 
   result () {

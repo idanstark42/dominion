@@ -1,11 +1,11 @@
 import Choice from './choice'
 
 export default class Cards extends Choice {
-  constructor(props) {
-    super(props)
+  constructor(parameters) {
+    super()
     this.cards = []
-    this.source = this.props.parameters[0] || 'hand'
-    this.filters = this.props.parameters[1] || {}
+    this.source = parameters[0] || 'hand'
+    this.filters = parameters[1] || {}
   }
 
   result () {

@@ -1,11 +1,7 @@
-import React, { Component } from 'react'
-
-export default class Choice extends Component {
-
-  state = {
-  	result: null
+export default class Choice {
+  constructor(props) {
+    this._result = null
   }
-
   result () {
   	return false
   }
@@ -24,7 +20,11 @@ export default class Choice extends Component {
       this.onCardClick(event)
       break
       case 'skip':
-      this.skip(event)
+      if (this.allowSkip) {
+        this.skip(event)
+      } else {
+        throw new Error('Cannot skip this choice.')
+      }
       break
       case 'done':
       this.done(event)
@@ -34,30 +34,25 @@ export default class Choice extends Component {
 
   done (event) {
     const result = this.result()
-    if (result && this.valid()) {
-      this.setState({ result })
+    if (result !== null && this.valid()) {
+      this._result = result
     } else {
       throw new Error('Invalid operation result')
     }
   }
 
   skip (event) {
-    const result = 'NO RESULT'
-    this.setState({ result })
+    this._result = 'NO RESULT'
   }
 
   waitForResult () {
     return new Promise(res => {
       const interval = setInterval(() => {
-        if (this.state.result !== null && this.valid()) {
+        if (this._result !== null && (this.valid() || this._result === 'NO RESULT')) {
           clearInterval(interval)
-          res(this.state.result)
+          res(this._result)
         }
       }, 100)
     })
-  }
-
-  render () {
-    return null
   }
 }

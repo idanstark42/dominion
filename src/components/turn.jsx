@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Cards from './choices/cards'
+import Cards from '../logic/choices/cards'
 import Card from './card'
 
 export default function Turn (props) {
@@ -16,7 +16,7 @@ export default function Turn (props) {
     }
   }
   
-  const choice = props.playerChoiceProvider.currentChoice()
+  const choice = props.choice
 
   return <div className="turn">
     {(choice && choice instanceof Cards) ? <div className="choice cards">

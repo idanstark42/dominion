@@ -7,13 +7,12 @@ import { snakeCase } from 'change-case'
 import { translate } from '../helpers/i18n'
 
 export default function Status (props) {
-  if (!props.game.turn || !props.playerChoiceProvider) {
+  if (!props.game.turn || !props.choice) {
     return <div className="empty status"></div>
   }
 
-  const choice = props.playerChoiceProvider.currentChoice()
-  const valid = choice.valid()
-  const action = snakeCase(choice.constructor.name)
+  const valid = props.choice.valid()
+  const action = snakeCase(props.choice.constructor.name)
 
   return <div className="status">
     <div className="direction">
@@ -37,7 +36,7 @@ export default function Status (props) {
       <div className={`${valid ? '' : 'disabled'} button`} onClick={() => props.handleEvent({ type: 'done' })}>
         {translate(`${action}_action`)}
       </div>
-      {choice.allowSkip ? <div className="skip button" onClick={() => props.handleEvent({ type: 'skip' })}>
+      {props.choice.allowSkip ? <div className="skip button" onClick={() => props.handleEvent({ type: 'skip' })}>
         {translate('skip')}
       </div> : ''}
     </div>
