@@ -23,6 +23,9 @@ export default class Choice extends Component {
       case 'card click':
       this.onCardClick(event)
       break
+      case 'skip':
+      this.skip(event)
+      break
       case 'done':
       this.done(event)
       break
@@ -36,6 +39,11 @@ export default class Choice extends Component {
     } else {
       throw new Error('Invalid operation result')
     }
+  }
+
+  skip (event) {
+    const result = 'NO RESULT'
+    this.setState({ result })
   }
 
   waitForResult () {

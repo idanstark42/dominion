@@ -1,8 +1,10 @@
 import React, { Component, createRef } from 'react'
 
 import Supply from './supply'
-import Dashboard from './dashboard'
-import Sidebar from './sidebar'
+import Players from './players'
+import Status from './status'
+import Turn from './turn'
+import Hand from './hand'
 import PlayerChoiceProvider from './player_choice_provider'
 
 import Game from '../logic/game'
@@ -46,16 +48,16 @@ export default class GamePanel extends Component {
     if (!this.state.game) {
       return <div>Loading...</div>
     }
-    console.log('game rendering', this.playerChoiceProvider.current && this.playerChoiceProvider.current.valid())
+    console.log('game rendering', this.playerChoiceProvider.current && this.playerChoiceProvider.current.currentChoice().valid())
     return <div className="game">
       <PlayerChoiceProvider ref={this.playerChoiceProvider} onChoosing={() => this.forceUpdate()}/>
+
       <Supply supply={this.state.game.supply} handleEvent={event => this.handleEvent(event)}></Supply>
-      <Sidebar game={this.state.game}></Sidebar>
-      <Dashboard player={this.state.game.localPlayer} turn={this.state.game.turn}
-        handleEvent={event => this.handleEvent(event)}
-        valid={this.playerChoiceProvider.current && this.playerChoiceProvider.current.valid()}
-        doneAction={this.playerChoiceProvider.current ? this.playerChoiceProvider.current.doneAction() : 'No action'}>
-      </Dashboard>
+      <Players game={this.state.game}></Players>
+      <Status game={this.state.game} handleEvent={event => this.handleEvent(event)} playerChoiceProvider={this.playerChoiceProvider.current}></Status>
+      <Turn turn={this.state.game.turn} handleEvent={event => this.handleEvent(event)} playerChoiceProvider={this.playerChoiceProvider.current}></Turn>
+      <Hand player={this.state.game.localPlayer} handleEvent={event => this.handleEvent(event)}>
+      </Hand>
     </div>
   }
 }

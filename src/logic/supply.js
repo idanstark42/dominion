@@ -26,7 +26,6 @@ export default class Supply {
   }
 
   takeCard (name) {
-    console.log('taking: ', name)
     if(this.piles[name] && this.piles[name].length > 0) {
       return this.piles[name].pop()
     } else{

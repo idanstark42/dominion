@@ -6,8 +6,9 @@ const config = {
   constantRows: [
   	['curse', 'estate', 'duchy', 'province', 'copper', 'silver', 'gold']
   ],
-  actionRows: 2,
-  defaultSupplyAmount: 10
+  actionRows: 1,
+  defaultSupplyAmount: 10,
+  colors: ['darkgreen', 'darkmagenta', 'darkgoldenrod', 'darkred']
 }
 
 export default config

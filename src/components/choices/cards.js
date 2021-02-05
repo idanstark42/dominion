@@ -22,6 +22,8 @@ export default class Cards extends Choice {
   onCardClick (cardClickEvent) {
     if (cardClickEvent.source === this.source && this.matching(cardClickEvent.card)) {
       this.cards.push(cardClickEvent.card)
+    } else if (cardClickEvent.source === 'chosen') {
+      this.cards.splice(this.cards.indexOf(cardClickEvent.card), 1)
     }
   }
 

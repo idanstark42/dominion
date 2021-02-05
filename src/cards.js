@@ -42,7 +42,7 @@ const cards = {
     },
     { name: 'workshop',   types: ['action'], cost: 3,
       action: async ({ player, choose }) => {
-        const card = await choose.cards('supply', { amount: 1, maxCost: 4 })
+        const card = await choose.card('supply', { maxCost: 4 })
         player.gain(card)
       }
     },
@@ -97,7 +97,7 @@ const cards = {
     { name: 'gardens',   types: ['victory'], cost: 4, vp: player => Math.floor(player.cards().length / 10), amount: 12 },
     { name: 'moneylender',   types: ['action'], cost: 4,
       action: async ({ turn, player, choose }) => {
-        const card = await choose.cards('hand', { amount: 1, name: 'copper', nullable: true })
+        const card = await choose.card('hand', { name: 'copper', nullable: true })
         if (card) {
           player.trash(card)
           turn.change('coins', 3)          
@@ -118,7 +118,7 @@ const cards = {
         const cardToTrash = await choose.cards('hand', { amount: 1 })
         player.trash(cardToTrash)
         
-        const cardToGain = await choose.cards('supply', { amount: 1, maxCost: cardToTrash.cost + 2 })
+        const cardToGain = await choose.card('supply', { maxCost: cardToTrash.cost + 2 })
         player.gain(cardToGain)
       }
     },
@@ -129,7 +129,7 @@ const cards = {
     },
     { name: 'throneroom',   types: ['action'], cost: 4,
       action: async ({ player, turn, choose }) => {
-        const actionCard = await choose.cards('hand', { amount: 1, type: 'action' })
+        const actionCard = await choose.card('hand', { type: 'action' })
         turn.playAction(actionCard, choose, false)
         turn.playAction(actionCard, choose, false)
       }
@@ -186,14 +186,14 @@ const cards = {
     },
     { name: 'mine',   types: ['action'], cost: 4,
       action: async ({ player, choose }) => {
-        const cardToTrash = await choose.cards('hand', { amount: 1, type: 'treasure' })
+        const cardToTrash = await choose.card('hand', { type: 'treasure' })
         player.trash(cardToTrash)
         
-        const cardToGain = await choose.cards('supply', { amount: 1, maxCost: cardToTrash.cost + 3, type: 'treasure' })
+        const cardToGain = await choose.card('supply', { maxCost: cardToTrash.cost + 3, type: 'treasure' })
         player.gain(cardToGain)
       }
     },
-    { name: 'sentinel',   types: ['action'], cost: 4,
+    { name: 'sentinel',   types: ['action'], cost: 5,
       action: async ({ player, choose }) => {
         const cards = player.draw(2)
         let returns = 0
@@ -225,7 +225,7 @@ const cards = {
     },
     { name: 'artisan',   types: ['action'], cost: 6,
       action: async ({ player, choose }) => {
-        const card = await choose.cards('supply', { amount: 1, maxCost: 5 })
+        const card = await choose.card('supply', { maxCost: 5 })
         player.gain(card)
         player.return()
       }

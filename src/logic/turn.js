@@ -9,7 +9,7 @@ export default class Turn {
 
     this.phase = Turn.PHASES.ACTION
     this.modifiers = []
-    this.playerActions = []
+    this.playedActions = []
   }
 
   async run (choose) {
@@ -20,19 +20,26 @@ export default class Turn {
 
   async actionPhase (choose) {
     while (this.actions > 0 && this.player.hand.some(card => card.types.includes('action'))) {
-      const card = await choose.cards('hand', { amount: 1, type: 'action' })
-      this.playAction(card, choose)
+      const card = await choose.action()
+      if (card === 'NO RESULT') {
+        break
+      } else {
+        this.playAction(card, choose)
+      }
     }
   }
 
   async buyPhase (choose) {
     this.phase = Turn.PHASES.BUY
     const cards = await choose.buy(this.currentCoins(), this.buys)
-    cards.forEach(card => this.player.gain(card))
+    if (cards !== 'NO RESULT') {
+      cards.forEach(card => this.player.gain(card))
+    }
   }
 
   async playAction (card, choose, reduceActionsCount=true) {
-    this.turn.playerActions.push(card)
+    this.playedActions.push(card)
+    this.player.hand.splice(this.player.hand.indexOf(card), 1)
 
     if (reduceActionsCount) {
       this.actions = this.actions - 1

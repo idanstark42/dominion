@@ -17,7 +17,7 @@ export default class Supply extends Component {
 
     const actionsInRow = supply.actions.length / config.actionRows
     const rows = config.constantRows.map(rowConfig => Object.keys(supply.piles).filter(pileName => rowConfig.includes(pileName)).map(key => supply.piles[key]))
-      .concat([0, actionsInRow].map(startingIndex => Array.from(supply.actions).splice(startingIndex, actionsInRow)))
+      .concat(new Array(config.actionRows).fill('a').map((a, index) => Array.from(supply.actions).splice(index * actionsInRow, actionsInRow)))
 
     this.setState({ rows })
   }

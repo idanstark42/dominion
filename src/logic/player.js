@@ -3,7 +3,7 @@ import shuffle from 'shuffle-array'
 import config from '../config'
 
 export default class Player {
-  constructor (supply) {
+  constructor (supply, index) {
     this.discarded = []
     this.hand = []
     this.deck = []
@@ -14,6 +14,9 @@ export default class Player {
     this.newHand()
 
     this.log = []
+
+    this.id = Math.floor(Math.random() * 10000)
+    this.color = config.colors[index]
   }
 
   // data

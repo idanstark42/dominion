@@ -5,7 +5,7 @@ import Turn from './turn'
 export default class Game {
   constructor ({ players=1, actions=null, onUpdate=false }) {
     this.supply = new Supply(actions)
-    this.players = Array(players).fill(new Player(this.supply))
+    this.players = Array(players).fill('A').map((a, index) => new Player(this.supply, index))
     this.onUpdate = onUpdate
 
     this.nextPlayerIndex = Math.floor(Math.random() * players)
