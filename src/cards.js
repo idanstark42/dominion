@@ -53,7 +53,9 @@ const cards = {
         turn.change('actions', 1)
 
         const card = await choose.card('discarded')
-        player.move(card, 'discarded', 'deck')
+        if (card !== 'NO RESULT') {
+          player.move(card, 'discarded', 'deck')
+        }
       }
     },
     { name: 'merchant',   types: ['action'], cost: 3,

@@ -6,6 +6,8 @@ import Status from './status'
 import Turn from './turn'
 import Hand from './hand'
 
+import ChoiceDialog from './choice_dialog'
+
 import Game from '../logic/game'
 import Choices from '../logic/choices'
 
@@ -55,6 +57,7 @@ export default class GamePanel extends Component {
       <Turn turn={this.state.game.turn} handleEvent={event => this.handleEvent(event)} choice={this.choicesManager.choice}></Turn>
       <Hand player={this.state.game.localPlayer} handleEvent={event => this.handleEvent(event)}>
       </Hand>
+      <ChoiceDialog player={this.state.game.localPlayer} game={this.state.game} choice={this.choicesManager.choice} handleEvent={event => this.handleEvent(event)}></ChoiceDialog>
     </div>
   }
 }

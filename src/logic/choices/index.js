@@ -15,7 +15,10 @@ export default class Choices extends EventEmitter {
 
     CHOICES.forEach(choice => {
       const choiceName = camelCase(choice.name)
-      this[choiceName] = async (...args) => await this.choose(choiceName, args)
+      this[choiceName] = async (...args) => {
+        console.log(args)
+        return await this.choose(choiceName, args)
+      }
     })
   }
 
@@ -25,6 +28,9 @@ export default class Choices extends EventEmitter {
     this.choice = new ChoiceClass(parameters)
     if (this.label) {
       this.choice.setLabel(this.label)
+    }
+    if (this.context) {
+      this.choice.setContext(this.context)
     }
     this.emit('starting choice', [this.choice, parameters])
     
@@ -42,6 +48,14 @@ export default class Choices extends EventEmitter {
 
   clearLabel () {
     this.label = null
+  }
+
+  setContext (context) {
+    this.context = context
+  }
+
+  clearContext () {
+    this.context = null
   }
 
   choosing () {

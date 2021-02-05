@@ -13,10 +13,12 @@ export default class Turn {
   }
 
   async run (choose) {
+    choose.setContext(this)
     await this.actionPhase(choose)
     await this.buyPhase(choose)
     this.playedActions.forEach(card => this.player.discarded.push(card))
     this.player.newHand()
+    choose.clearContext()
   }
 
   async actionPhase (choose) {

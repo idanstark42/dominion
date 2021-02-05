@@ -4,7 +4,7 @@ export default class Card extends Cards {
   constructor(parameters) {
     super(parameters)
     
-    this.filters = { amount: 1 }
+    Object.assign(this.filters, { amount: 1 })
   }
 
   result () {

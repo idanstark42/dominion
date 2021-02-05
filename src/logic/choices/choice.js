@@ -1,9 +1,10 @@
 import { snakeCase } from 'change-case'
 
 export default class Choice {
-  constructor(props) {
+  constructor() {
     this._result = null
     this.label = snakeCase(this.constructor.name)
+    this.context = null
   }
   
   result () {
@@ -12,6 +13,10 @@ export default class Choice {
 
   setLabel (label) {
     this.label = label
+  }
+
+  setContext (context) {
+    this.context = context
   }
 
   valid () {

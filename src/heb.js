@@ -11,6 +11,9 @@ const heb = {
   chapel_direction: 'בחר קלפים לזריקה לפח',
   chapel_action: 'זרוק',
 
+  workshop_direction: 'בחר קלף להרוויח מהסדנה',
+  workshop_action: 'בחר',
+
   skip: 'לא, תודה',
   cards_in_hand: ' קלפים ביד'
 }

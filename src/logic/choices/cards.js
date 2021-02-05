@@ -32,4 +32,12 @@ export default class Cards extends Choice {
       (this.filters.name ? card.name === this.filters.name : true) &&
       (this.filters.type ? card.types.includes(this.filters.type) : true)
   }
+
+  waitForResult () {
+    if (this.context.player.hasOwnProperty(this.source) && this.context.player[this.source].length === 0) {
+      return Promise.resolve('NO RESULT')
+    } else {
+      return super.waitForResult()
+    }
+  }
 }

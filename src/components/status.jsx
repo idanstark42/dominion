@@ -5,12 +5,13 @@ import { faCoins, faBolt, faCartPlus } from '@fortawesome/free-solid-svg-icons'
 
 import { translate } from '../helpers/i18n'
 
+import Actions from './actions'
+
 export default function Status (props) {
   if (!props.game.turn || !props.choice) {
     return <div className="empty status"></div>
   }
 
-  const valid = props.choice.valid()
   const currentAction = props.choice.label
 
   return <div className="status">
@@ -30,14 +31,7 @@ export default function Status (props) {
         <FontAwesomeIcon icon={faCartPlus} />
         {props.game.turn.buys}
       </div>
-    </div>
-    <div className="actions">
-      <div className={`${valid ? '' : 'disabled'} button`} onClick={() => props.handleEvent({ type: 'done' })}>
-        {translate(`${currentAction}_action`)}
-      </div>
-      {props.choice.allowSkip ? <div className="skip button" onClick={() => props.handleEvent({ type: 'skip' })}>
-        {translate('skip')}
-      </div> : ''}
+      <Actions choice={props.choice} handleEvent={props.handleEvent} />
     </div>
   </div>
 }
