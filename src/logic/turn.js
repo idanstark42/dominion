@@ -24,7 +24,8 @@ export default class Turn {
       if (card === 'NO RESULT') {
         break
       } else {
-        this.playAction(card, choose)
+        console.log(`playing ${card.name}`)
+        await this.playAction(card, choose)
       }
     }
   }
@@ -45,7 +46,9 @@ export default class Turn {
       this.actions = this.actions - 1
     }
 
+    choose.setLabel(card.name)
     await card.action({ turn: this, player: this.player, game: this.game, choose })
+    choose.clearLabel()
   }
 
   change (stat, amount) {
@@ -53,7 +56,7 @@ export default class Turn {
   }
 
   modifyValue (modifier) {
-    this.modifier.push(modifier)
+    this.modifiers.push(modifier)
   }
 
   currentCoins () {

@@ -13,7 +13,8 @@ const cards = {
   actions: [
     // 2 coins cards
     { name: 'cellar',   types: ['action'], cost: 2,
-      action: async ({ player, choose }) => {
+      action: async ({ player, turn, choose }) => {
+        turn.change('actions', 1)
         const cards = await choose.cards('hand')
         cards.forEach(card => player.discard(card))
         player.draw(cards.length)
@@ -51,7 +52,7 @@ const cards = {
         player.draw()
         turn.change('actions', 1)
 
-        const card = await choose.cards('discarded', { amount: 1 })
+        const card = await choose.card('discarded')
         player.move(card, 'discarded', 'deck')
       }
     },
@@ -115,7 +116,7 @@ const cards = {
     },
     { name: 'remodel',   types: ['action'], cost: 4,
       action: async ({ player, choose }) => {
-        const cardToTrash = await choose.cards('hand', { amount: 1 })
+        const cardToTrash = await choose.card('hand')
         player.trash(cardToTrash)
         
         const cardToGain = await choose.card('supply', { maxCost: cardToTrash.cost + 2 })

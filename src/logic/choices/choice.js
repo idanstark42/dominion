@@ -1,9 +1,17 @@
+import { snakeCase } from 'change-case'
+
 export default class Choice {
   constructor(props) {
     this._result = null
+    this.label = snakeCase(this.constructor.name)
   }
+  
   result () {
   	return false
+  }
+
+  setLabel (label) {
+    this.label = label
   }
 
   valid () {
