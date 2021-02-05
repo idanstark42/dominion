@@ -8,7 +8,10 @@ const heb = {
   cellar_direction: 'בחר קלפים לזריקה',
   cellar_action: 'זרוק',
 
-  skip: 'דלג',
+  chapel_direction: 'בחר קלפים לזריקה לפח',
+  chapel_action: 'זרוק',
+
+  skip: 'לא, תודה',
   cards_in_hand: ' קלפים ביד'
 }
 
