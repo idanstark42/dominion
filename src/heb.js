@@ -37,6 +37,11 @@ const heb = {
   library_direction: 'תרצה להשליך את הקלף הזה?',
   library_action: 'כן, תודה',
 
+  mine_trash_direction: 'בחר קלף להשליך לפח',
+  mine_trash_action: 'בחר',
+  mine_gain_direction: 'בחר קלף להרוויח',
+  mine_gain_action: 'בחר',
+
   skip: 'לא, תודה',
   cards_in_hand: ' קלפים ביד'
 }

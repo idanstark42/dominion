@@ -192,13 +192,15 @@ const cards = {
         player.draw(1)
       }
     },
-    { name: 'mine',   types: ['action'], cost: 4,
+    { name: 'mine',   types: ['action'], cost: 5,
       action: async ({ player, choose }) => {
+        choose.setLabel('mine_trash')
         const cardToTrash = await choose.card('hand', { type: 'treasure' })
         player.trash(cardToTrash)
         
+        choose.setLabel('mine_gain')
         const cardToGain = await choose.card('supply', { maxCost: cardToTrash.cost + 3, type: 'treasure' })
-        player.gain(cardToGain)
+        player.gain(cardToGain, 'hand')
       }
     },
     { name: 'sentinel',   types: ['action'], cost: 5,
