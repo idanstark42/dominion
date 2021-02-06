@@ -100,7 +100,8 @@ const cards = {
     { name: 'gardens',   types: ['victory'], cost: 4, vp: player => Math.floor(player.cards().length / 10), amount: 12 },
     { name: 'moneylender',   types: ['action'], cost: 4,
       action: async ({ turn, player, choose }) => {
-        const card = await choose.card('hand', { name: 'copper', nullable: true })
+        choose.allowSkip(true)
+        const card = await choose.card('hand', { name: 'copper' })
         if (card) {
           player.trash(card)
           turn.change('coins', 3)          

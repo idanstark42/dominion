@@ -20,6 +20,9 @@ const heb = {
   vassal_direction: 'תרצה להשתמש בפעולה הזאת?',
   vassal_action: 'כן, תודה',
 
+  moneylender_direction: 'בחר מטבע ארד לזרוק',
+  moneylender_action: 'בחר',
+
   skip: 'לא, תודה',
   cards_in_hand: ' קלפים ביד'
 }

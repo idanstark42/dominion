@@ -33,6 +33,9 @@ export default class Choices extends EventEmitter {
     if (this.context) {
       this.choice.setContext(this.context)
     }
+    if (this._allowSkip === true) {
+      this.choice.allowSkip = true
+    }
     this.emit('starting choice', [this.choice, parameters])
     
     const result = await this.choice.waitForResult()
@@ -57,6 +60,10 @@ export default class Choices extends EventEmitter {
 
   clearContext () {
     this.context = null
+  }
+
+  allowSkip (skippable) {
+    this._allowSkip = skippable
   }
 
   choosing () {
