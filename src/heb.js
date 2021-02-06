@@ -42,6 +42,11 @@ const heb = {
   mine_gain_direction: 'בחר קלף להרוויח',
   mine_gain_action: 'בחר',
 
+  sentinel_options_direction: 'מה לעשות עם הקלף הזה?',
+  sentinel_order_direction: 'לחץ על הקלפים לפי הסדר שלהם (מלמעלה למטה)',
+  
+  sentinel_order_done: 'סיימתי',
+  sentinel_order_reset: 'אפס',
 
   artisan_gain_direction: 'בחר קלף להרוויח ליד',
   artisan_gain_action: 'בחר',
@@ -49,7 +54,10 @@ const heb = {
   artisan_return_action: 'בחר',
 
   skip: 'לא, תודה',
-  cards_in_hand: ' קלפים ביד'
+  cards_in_hand: ' קלפים ביד',
+  trash: 'השלך לפח',
+  discard: 'השלך',
+  deck: 'החזר לחבילה'
 }
 
 export default heb

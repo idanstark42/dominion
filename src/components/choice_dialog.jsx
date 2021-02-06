@@ -6,6 +6,7 @@ import Actions from './actions'
 import Cards from '../logic/choices/cards'
 import Yesno from '../logic/choices/yesno'
 import Options from '../logic/choices/options'
+import Order from '../logic/choices/order'
 
 import { translate } from '../helpers/i18n'
 
@@ -24,7 +25,7 @@ const DIALOGS = [
               </div>,
               <Actions key="actions" choice={choice} handleEvent={handleEvent}/>]
     }
-  }, 
+  },
   {
     match: ({ choice }) => (choice instanceof Yesno),
     render: ({ choice, player, handleEvent }) => {
@@ -34,15 +35,37 @@ const DIALOGS = [
               <Card card={choice.card} key="card"/>,
               <Actions key="actions" choice={choice} handleEvent={handleEvent}/>]
     }
-  }, 
+  },
   {
-    match: ({ choice }) => (choice instanceof Yesno),
+    match: ({ choice }) => (choice instanceof Options),
     render: ({ choice, player, handleEvent }) => {
+      const actions = choice.options.map(option => ({ label: option, onPress: () => handleEvent({ type: 'option', option }) }))
+      
       return [<div key="direction" className="direction">
                 {translate(`${choice.label}_direction`)}
               </div>,
               <Card card={choice.card} key="card"/>,
-              <Actions key="actions" choice={choice} handleEvent={handleEvent}/>]
+              <Actions key="actions" actions={actions}/>]
+    }
+  },
+  {
+    match: ({ choice }) => (choice instanceof Order),
+    render: ({ choice, player, handleEvent }) => {
+      const actions = [
+        { label: `${choice.label}_done`, onPress: () => handleEvent({ type: 'done' }) },
+        { label: `${choice.label}_reset`, onPress: () => handleEvent({ type: 'reset' }) }
+      ]
+      
+      return [<div key="direction" className="direction">
+                {translate(`${choice.label}_direction`)}
+              </div>,
+              <div key="cards" className="discarded-cards-choice">
+              {choice.cards.map((card, index) =>
+                <Card card={card} key={index}
+                      onClick={() => handleEvent({ type: 'card click', card })}/>
+              )}
+              </div>,
+              <Actions key="actions" actions={actions}/>]
     }
   }
 ]

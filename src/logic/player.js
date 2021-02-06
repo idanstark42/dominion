@@ -68,8 +68,13 @@ export default class Player {
   }
 
   return (card) {
-    this.hand.splice(this.hand.indexOf(card), 1)
-    this.deck.push(card)
+    console.log(card)
+    if (Array.isArray(card)) {
+      card.forEach(c => this.return(c))
+    } else {
+      this.hand.splice(this.hand.indexOf(card), 1)
+      this.deck.push(card)
+    }
   }
 
   moveIf (source, target, conditionFunction) {

@@ -82,6 +82,7 @@ const cards = {
         player.discard(card)
       }
     },
+    // 4 coins cards
     { name: 'beurocrat',   types: ['action', 'attack'], cost: 4,
       action: async ({ player, game }) => {
         player.gain('silver')
@@ -142,6 +143,7 @@ const cards = {
         return [actionCard, actionCard]
       }
     },
+    // 5 coins cards
     { name: 'bandit',   types: ['action', 'attack'], cost: 5,
       action: async ({ player }) => {
         player.gain('gold')
@@ -204,24 +206,35 @@ const cards = {
       }
     },
     { name: 'sentinel',   types: ['action'], cost: 5,
-      action: async ({ player, choose }) => {
+      action: async ({ player, turn, choose }) => {
+        player.draw()
+        turn.change('actions', 1)
+
         const cards = player.draw(2)
         let returns = 0
 
+        choose.setLabel('sentinel_options')
         for (let card of cards) {
           const choice = await choose.options({ options: ['trash', 'discard', 'deck'], card })
-          if (choice === 'trash') {
+          switch (choice) {
+            case 'trash':
             player.trash(card)
-          } else if (choice === 'discard') {
+            break
+            case 'discard':
             player.discard(card)
-          } else if (choice === 'back') {
+            break
+            case 'deck':
             player.return(card)
             returns = returns + 1
+            break
           }
         }
 
         if (returns > 1) {
-          await choose.order({ cards })
+          choose.setLabel('sentinel_order')
+          const orderedCards = await choose.order({ cards })
+          player.draw(2)
+          player.return(orderedCards)
           // TODO order the cards in the deck
         }
       }
@@ -233,6 +246,7 @@ const cards = {
         // TODO Handle attacks
       }
     },
+    // 6 coins card
     { name: 'artisan',   types: ['action'], cost: 6,
       action: async ({ player, choose }) => {
         choose.setLabel('artisan_gain')

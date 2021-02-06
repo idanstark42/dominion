@@ -5,6 +5,7 @@ export default class Choice {
     this._result = null
     this.label = snakeCase(this.constructor.name)
     this.context = null
+    this.donnable = true
   }
   
   result () {

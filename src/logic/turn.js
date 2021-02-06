@@ -18,6 +18,7 @@ export default class Turn {
     choose.setContext(this)
     await this.actionPhase(choose)
     await this.buyPhase(choose)
+    console.log(this.player)
     this.playedActions.forEach(card => this.player.discarded.push(card))
     this.player.newHand()
     choose.clearContext()
