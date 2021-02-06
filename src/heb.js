@@ -42,6 +42,12 @@ const heb = {
   mine_gain_direction: 'בחר קלף להרוויח',
   mine_gain_action: 'בחר',
 
+
+  artisan_gain_direction: 'בחר קלף להרוויח ליד',
+  artisan_gain_action: 'בחר',
+  artisan_return_direction: 'בחר קלף להחזיר לחבילה',
+  artisan_return_action: 'בחר',
+
   skip: 'לא, תודה',
   cards_in_hand: ' קלפים ביד'
 }

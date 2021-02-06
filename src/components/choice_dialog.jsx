@@ -5,6 +5,7 @@ import Actions from './actions'
 
 import Cards from '../logic/choices/cards'
 import Yesno from '../logic/choices/yesno'
+import Options from '../logic/choices/options'
 
 import { translate } from '../helpers/i18n'
 
@@ -21,6 +22,16 @@ const DIALOGS = [
                       onClick={() => handleEvent({ type: 'card click', source: 'discarded', card })}/>
               )}
               </div>,
+              <Actions key="actions" choice={choice} handleEvent={handleEvent}/>]
+    }
+  }, 
+  {
+    match: ({ choice }) => (choice instanceof Yesno),
+    render: ({ choice, player, handleEvent }) => {
+      return [<div key="direction" className="direction">
+                {translate(`${choice.label}_direction`)}
+              </div>,
+              <Card card={choice.card} key="card"/>,
               <Actions key="actions" choice={choice} handleEvent={handleEvent}/>]
     }
   }, 

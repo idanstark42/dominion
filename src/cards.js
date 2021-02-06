@@ -209,7 +209,7 @@ const cards = {
         let returns = 0
 
         for (let card of cards) {
-          const choice = await choose.move({ options: ['trash', 'hand', 'discard', 'deck'], card })
+          const choice = await choose.options({ options: ['trash', 'discard', 'deck'], card })
           if (choice === 'trash') {
             player.trash(card)
           } else if (choice === 'discard') {
@@ -235,8 +235,10 @@ const cards = {
     },
     { name: 'artisan',   types: ['action'], cost: 6,
       action: async ({ player, choose }) => {
+        choose.setLabel('artisan_gain')
         const cardToGain = await choose.card('supply', { maxCost: 5 })
-        player.gain(cardToGain)
+        player.gain(cardToGain, 'hand')
+        choose.setLabel('artisan_return')
         const cardToReturn = await choose.card('hand')
         player.return(cardToReturn)
       }
