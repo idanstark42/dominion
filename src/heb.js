@@ -34,6 +34,9 @@ const heb = {
   throneroom_direction: 'בחר פעולה לבצע פעמיים',
   throneroom_action: 'בחר',
 
+  library_direction: 'תרצה להשליך את הקלף הזה?',
+  library_action: 'כן, תודה',
+
   skip: 'לא, תודה',
   cards_in_hand: ' קלפים ביד'
 }
