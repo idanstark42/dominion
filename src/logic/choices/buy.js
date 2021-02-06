@@ -5,8 +5,6 @@ export default class Buy extends Cards {
   	super(['supply', { }])
 	this.coins = parameters[0] || 0
     this.buys = parameters[1] || 1
-
-    this.allowSkip = true
   }
 
   valid () {

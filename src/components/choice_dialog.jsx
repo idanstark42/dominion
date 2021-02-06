@@ -59,10 +59,15 @@ const DIALOGS = [
       return [<div key="direction" className="direction">
                 {translate(`${choice.label}_direction`)}
               </div>,
-              <div key="cards" className="discarded-cards-choice">
+              <div key="cards" className="cards">
               {choice.cards.map((card, index) =>
                 <Card card={card} key={index}
                       onClick={() => handleEvent({ type: 'card click', card })}/>
+              )}
+              </div>,
+              <div key="ordered cards" className="oredered cards">
+              {choice.orderedCards.map((card, index) =>
+                <Card card={card} key={index}/>
               )}
               </div>,
               <Actions key="actions" actions={actions}/>]
@@ -81,5 +86,5 @@ export default function ChoiceDialog (props) {
     return null
   }
 
-  return <div className="dialog">{dialog.render(props)}</div>
+  return <div className={`${props.choice.label} dialog`}>{dialog.render(props)}</div>
 }

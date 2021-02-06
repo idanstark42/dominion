@@ -15,7 +15,9 @@ export default class Order extends Choice {
       this.orderedCards = []
       break
       case 'card click':
-      this.orderedCards.push(event.card)
+      if (!this.orderedCards.includes(event.card)) {
+        this.orderedCards.push(event.card)
+      }
       break
       case 'done':
       this._result = this.cards

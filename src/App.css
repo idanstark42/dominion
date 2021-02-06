@@ -183,13 +183,12 @@
   display: none;
 }
 
-
 .game .dialog {
   position: absolute;
   width: 30vw;
   min-height: 30vh;
-  top: 20vh;
-  left: 40vw;
+  top: 10vh;
+  left: 35vw;
   border: 1px solid black;
   box-shadow: 1px 1px 2px 1px #0e0c0c;
   padding: 0;
@@ -210,4 +209,17 @@
 
 .game .dialog .card {
   height: 40vh;
+}
+
+.game .dialog .cards {
+  width: 100%;
+  height: 30vh;
+  overflow: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.game .dialog .card {
+  height: 30vh;
 }

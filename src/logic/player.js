@@ -70,7 +70,7 @@ export default class Player {
   return (card) {
     console.log(card)
     if (Array.isArray(card)) {
-      card.forEach(c => this.return(c))
+      card.reverse().forEach(c => this.return(c))
     } else {
       this.hand.splice(this.hand.indexOf(card), 1)
       this.deck.push(card)
