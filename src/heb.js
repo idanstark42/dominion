@@ -23,6 +23,9 @@ const heb = {
   moneylender_direction: 'בחר מטבע ארד לזרוק',
   moneylender_action: 'בחר',
 
+  poacher_direction: 'בחר קלפים להשליך',
+  poacher_action: 'בחר',
+
   skip: 'לא, תודה',
   cards_in_hand: ' קלפים ביד'
 }

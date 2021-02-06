@@ -113,8 +113,11 @@ const cards = {
         turn.change('actions', 1)
         turn.change('coins', 1)
         player.draw()
-        const cards = await choose.cards('hand', { amount: game.supply.emptyPiles() })
-        cards.forEach(card => player.discard(card))
+        const amount = game.supply.emptyPiles()
+        if (amount) {
+          const cards = await choose.cards('hand', { amount })
+          cards.forEach(card => player.discard(card))
+        }
       }
     },
     { name: 'remodel',   types: ['action'], cost: 4,

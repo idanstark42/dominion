@@ -40,7 +40,7 @@ export default class Game {
   }
 
   nextTurn () {
-    this.turn = new Turn(this.players[this.nextPlayerIndex])
+    this.turn = new Turn(this.players[this.nextPlayerIndex], this)
     this.nextPlayerIndex = (this.nextPlayerIndex + 1) % this.players.length
     return this.turn
   }
