@@ -29,7 +29,6 @@ export default class Turn {
       if (card === 'NO RESULT') {
         break
       } else {
-        console.log(`playing ${card.name}`)
         await this.playAction(card, choose)
       }
     }
@@ -44,8 +43,10 @@ export default class Turn {
   }
 
   async playAction (card, choose, reduceActionsCount=true) {
-    this.playedActions.push(card)
-    this.player.hand.splice(this.player.hand.indexOf(card), 1)
+    if (this.player.hand.indexOf(card) !== -1) {
+      this.playedActions.push(card)
+      this.player.hand.splice(this.player.hand.indexOf(card), 1)
+    }
 
     if (reduceActionsCount) {
       this.actions = this.actions - 1
@@ -57,9 +58,11 @@ export default class Turn {
 
     if (nextActions) {
       if (Array.isArray(nextActions)) {
-        return await Promise.all(nextActions.map(nextCard => nextCard.action({ turn: this, player: this.player, game: this.game, choose })))
+        for (let i = 0; i < nextActions.length; i++) {
+          await this.playAction(nextActions[i], choose, false)
+        }
       } else if (nextActions instanceof Card) {
-        return await this.playAction(nextActions, choose, false)
+        await this.playAction(nextActions, choose, false)
       }
     }
   }

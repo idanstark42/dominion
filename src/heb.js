@@ -31,6 +31,9 @@ const heb = {
   remodel_gain_direction: 'בחר קלף להרוויח',
   remodel_gain_action: 'בחר',
 
+  throneroom_direction: 'בחר פעולה לבצע פעמיים',
+  throneroom_action: 'בחר',
+
   skip: 'לא, תודה',
   cards_in_hand: ' קלפים ביד'
 }

@@ -3,7 +3,6 @@ import { translate } from '../helpers/i18n'
 
 export default function Actions (props) {
   const valid = props.choice.valid()
-  console.log(valid)
   const currentAction = props.choice.label
 
   return <div className="actions">

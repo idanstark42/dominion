@@ -16,10 +16,7 @@ export default class Choices extends EventEmitter {
 
     CHOICES.forEach(choice => {
       const choiceName = camelCase(choice.name)
-      this[choiceName] = async (...args) => {
-        console.log(args)
-        return await this.choose(choiceName, args)
-      }
+      this[choiceName] = async (...args) => await this.choose(choiceName, args)
     })
   }
 

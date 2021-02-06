@@ -73,7 +73,6 @@ const cards = {
     { name: 'vassal',   types: ['action'], cost: 3,
       action: async ({ player, choose }) => {
         const card = player.draw()
-        console.log(card.name)
         if (card.types.includes('action')) {
           const useCard = await choose.yesno(card)
           if (useCard) {
@@ -139,8 +138,8 @@ const cards = {
     { name: 'throneroom',   types: ['action'], cost: 4,
       action: async ({ player, turn, choose }) => {
         const actionCard = await choose.card('hand', { type: 'action' })
-        turn.playAction(actionCard, choose, false)
-        turn.playAction(actionCard, choose, false)
+        console.log(actionCard)
+        return [actionCard, actionCard]
       }
     },
     { name: 'bandit',   types: ['action', 'attack'], cost: 5,
