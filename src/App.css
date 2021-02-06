@@ -65,8 +65,9 @@
 }
 
 
-.status .direction {
+.direction {
   text-align: right;
+  direction: rtl;
   color: #ffffffcf;
   font-size: 1.5rem;
   border-radius: 0.3rem;
@@ -154,7 +155,7 @@
   z-index: 1;
 }
 
-.status .actions .button {
+.actions .button {
   background: gold;
   margin: 0.5rem;
   padding: 0.5rem;
@@ -165,14 +166,14 @@
   text-align: center;
 }
 
-.status .actions .skip.button {
+.actions .skip.button {
   background: none;
   border: 2px solid gold;
   color: gold;
   box-sizing: border-box;
 }
 
-.status .actions .button.disabled {
+.actions .button.disabled {
   pointer-events: none;
   opacity: 0.5;
 }
@@ -204,4 +205,8 @@
 
 .game .dialog .discarded-cards-choice .card {
   height: unset;
+}
+
+.game .dialog .card {
+  height: 40vh;
 }

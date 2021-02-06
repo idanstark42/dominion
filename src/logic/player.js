@@ -73,13 +73,9 @@ export default class Player {
   }
 
   moveIf (source, target, conditionFunction) {
-    const card = this[source][0]
+    const card = this[source][this[source].length - 1]
     if (conditionFunction(card)) {
-      if (target === 'trash') {
-      	this.trashTop(source)
-      } else {
-      	this[target].push(this[source].pop())
-      }
+      this.move(card, source, target)
     }
   }
 
@@ -87,7 +83,7 @@ export default class Player {
     if (target === 'trash') {
       this.trash(card, source)
     } else {
-      source.splice(source.indexOf(card), 1)
+      this[source].splice(this[source].indexOf(card), 1)
       this[target].push(card)
     }
   }

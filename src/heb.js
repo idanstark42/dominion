@@ -14,6 +14,12 @@ const heb = {
   workshop_direction: 'בחר קלף להרוויח מהסדנה',
   workshop_action: 'בחר',
 
+  harbinger_direction: 'בחר קלף להחזיר לחבילה',
+  harbinger_action: 'בחר',
+
+  vassal_direction: 'תרצה להשתמש בפעולה הזאת?',
+  vassal_action: 'כן, תודה',
+
   skip: 'לא, תודה',
   cards_in_hand: ' קלפים ביד'
 }

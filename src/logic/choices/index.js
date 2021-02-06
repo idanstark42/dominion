@@ -1,12 +1,13 @@
 import EventEmitter from 'eventemitter3'
 import { camelCase } from 'change-case'
 
-import Buy from './buy'
 import Cards from './cards'
 import Card from './card'
+import Yesno from './yesno'
+import Buy from './buy'
 import Action from './action'
 
-const CHOICES = [Buy, Cards, Card, Action]
+const CHOICES = [Buy, Action, Cards, Card, Yesno]
 
 export default class Choices extends EventEmitter {
   constructor() {

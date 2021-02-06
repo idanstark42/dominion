@@ -4,18 +4,34 @@ import Card from './card'
 import Actions from './actions'
 
 import Cards from '../logic/choices/cards'
+import Yesno from '../logic/choices/yesno'
+
+import { translate } from '../helpers/i18n'
 
 const DIALOGS = [
   {
     match: ({ choice }) => (choice instanceof Cards && choice.source === 'discarded'),
     render: ({ choice, player, handleEvent }) => {
-      return [<div className="discarded-cards-choice">
+      return [<div key="direction" className="direction">
+                {translate(`${choice.label}_direction`)}
+              </div>,
+              <div key="cards" className="discarded-cards-choice">
               {player.discarded.map((card, index) =>
                 <Card card={card} key={index}
-                      onClick={() => handleEvent({ type: 'card click', source: 'hand', card })}/>
+                      onClick={() => handleEvent({ type: 'card click', source: 'discarded', card })}/>
               )}
-            </div>,
-            <Actions choice={choice} handleEvent={handleEvent}/>]
+              </div>,
+              <Actions key="actions" choice={choice} handleEvent={handleEvent}/>]
+    }
+  }, 
+  {
+    match: ({ choice }) => (choice instanceof Yesno),
+    render: ({ choice, player, handleEvent }) => {
+      return [<div key="direction" className="direction">
+                {translate(`${choice.label}_direction`)}
+              </div>,
+              <Card card={choice.card} key="card"/>,
+              <Actions key="actions" choice={choice} handleEvent={handleEvent}/>]
     }
   }
 ]

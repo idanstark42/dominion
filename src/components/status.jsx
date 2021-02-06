@@ -12,11 +12,9 @@ export default function Status (props) {
     return <div className="empty status"></div>
   }
 
-  const currentAction = props.choice.label
-
   return <div className="status">
     <div className="direction">
-      {translate(`${currentAction}_direction`)}
+      {translate(`${props.choice.label}_direction`)}
     </div>
     <div className="turn-stats">
       <div className="stat">

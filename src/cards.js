@@ -73,13 +73,13 @@ const cards = {
     { name: 'vassal',   types: ['action'], cost: 3,
       action: async ({ player, choose }) => {
         const card = player.draw()
-        if (card.types.include('action')) {
+        console.log(card.name)
+        if (card.types.includes('action')) {
           const useCard = await choose.yesno(card)
           if (useCard) {
             return card
           }
         }
-
         player.discard(card)
       }
     },
@@ -228,9 +228,10 @@ const cards = {
     },
     { name: 'artisan',   types: ['action'], cost: 6,
       action: async ({ player, choose }) => {
-        const card = await choose.card('supply', { maxCost: 5 })
-        player.gain(card)
-        player.return()
+        const cardToGain = await choose.card('supply', { maxCost: 5 })
+        player.gain(cardToGain)
+        const cardToReturn = await choose.card('hand')
+        player.return(cardToReturn)
       }
     }
   ]

@@ -1,3 +1,5 @@
+import Card from './card'
+
 export default class Turn {
   constructor (player, game) {
     this.player = player
@@ -50,8 +52,16 @@ export default class Turn {
     }
 
     choose.setLabel(card.name)
-    await card.action({ turn: this, player: this.player, game: this.game, choose })
+    const nextActions = await card.action({ turn: this, player: this.player, game: this.game, choose })
     choose.clearLabel()
+
+    if (nextActions) {
+      if (Array.isArray(nextActions)) {
+        return await Promise.all(nextActions.map(nextCard => nextCard.action({ turn: this, player: this.player, game: this.game, choose })))
+      } else if (nextActions instanceof Card) {
+        return await this.playAction(nextActions, choose, false)
+      }
+    }
   }
 
   change (stat, amount) {
