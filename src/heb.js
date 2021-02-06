@@ -26,6 +26,11 @@ const heb = {
   poacher_direction: 'בחר קלפים להשליך',
   poacher_action: 'בחר',
 
+  remodel_trash_direction: 'בחר קלף להשליך לפח',
+  remodel_trash_action: 'בחר',
+  remodel_gain_direction: 'בחר קלף להרוויח',
+  remodel_gain_action: 'בחר',
+
   skip: 'לא, תודה',
   cards_in_hand: ' קלפים ביד'
 }

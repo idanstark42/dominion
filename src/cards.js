@@ -122,9 +122,11 @@ const cards = {
     },
     { name: 'remodel',   types: ['action'], cost: 4,
       action: async ({ player, choose }) => {
+        choose.setLabel('remodel_trash')
         const cardToTrash = await choose.card('hand')
         player.trash(cardToTrash)
         
+        choose.setLabel('remodel_gain')
         const cardToGain = await choose.card('supply', { maxCost: cardToTrash.cost + 2 })
         player.gain(cardToGain)
       }
