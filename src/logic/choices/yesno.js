@@ -16,6 +16,8 @@ export default class Yesno extends Choice {
       case 'done':
       this._result = true
       break
+      default:
+      throw new Error('Bad event')
     }
   }
 }

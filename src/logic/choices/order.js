@@ -22,6 +22,8 @@ export default class Order extends Choice {
       case 'done':
       this._result = this.cards
       break
+      default:
+      throw new Error('Bad event')
     }
   }
 }

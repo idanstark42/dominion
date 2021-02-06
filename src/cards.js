@@ -227,6 +227,8 @@ const cards = {
             player.return(card)
             returns = returns + 1
             break
+            default:
+            throw new Error('Bad choice')
           }
         }
 

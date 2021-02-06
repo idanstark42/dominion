@@ -44,6 +44,8 @@ export default class Choice {
       case 'done':
       this.done(event)
       break
+      default:
+      throw new Error('Bad event')
     }
   }
 
