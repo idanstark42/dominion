@@ -111,10 +111,10 @@ export default class Player {
   // End of game calculations
 
   points () {
-    this.cards().reduce((sum, card) => {
+    return this.cards().reduce((sum, card) => {
       if (card.vp instanceof Function) {
         return sum + card.vp(this)
-      } else if (card.vp.constructor === Number) {
+      } else if (card.vp && card.vp.constructor === Number) {
         return sum + card.vp
       } else {
         return sum
@@ -125,6 +125,7 @@ export default class Player {
   stats () {
     const cards = this.cards()
     return {
+      points: this.points(),
       cardsCount: cards.length,
 
       victoryCardCounts: cards.filter(({ types }) => types.includes('victory')).length,

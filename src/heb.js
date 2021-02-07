@@ -57,7 +57,14 @@ const heb = {
   cards_in_hand: ' קלפים ביד',
   trash: 'השלך לפח',
   discard: 'השלך',
-  deck: 'החזר לחבילה'
+  deck: 'החזר לחבילה',
+  stats: 'סוף המשחק',
+
+  points: 'נקודות',
+  cardsCount: 'קלפים',
+  victoryCardCounts: 'קלפי נצחון',
+  treasureCardCounts: 'קלפי אוצר',
+  actionCardCounts: 'קלפי פעולה'
 }
 
 export default heb

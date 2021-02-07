@@ -7,6 +7,7 @@ import Turn from './turn'
 import Hand from './hand'
 
 import ChoiceDialog from './choice_dialog'
+import Stats from './stats'
 
 import Game from '../logic/game'
 import Choices from '../logic/choices'
@@ -33,6 +34,9 @@ export default class GamePanel extends Component {
     await this.state.game.next(this.choicesManager)
     this.forceUpdate()
     // After each event in the game, we sync. Also after each choice.
+    if (this.state.game.over()) {
+      this.setState({ over: true })
+    }
   }
 
   onUpdate () {
@@ -42,6 +46,9 @@ export default class GamePanel extends Component {
   }
 
   handleEvent (event) {
+    if (this.state.over) {
+      return
+    }
     this.choicesManager.handleEvent(event)
     this.forceUpdate()
   }
@@ -50,6 +57,7 @@ export default class GamePanel extends Component {
     if (!this.state.game) {
       return <div>Loading...</div>
     }
+
     return <div className="game">
       <Supply supply={this.state.game.supply} handleEvent={event => this.handleEvent(event)}></Supply>
       <Players game={this.state.game}></Players>
@@ -58,6 +66,7 @@ export default class GamePanel extends Component {
       <Hand player={this.state.game.localPlayer} handleEvent={event => this.handleEvent(event)}>
       </Hand>
       <ChoiceDialog player={this.state.game.localPlayer} game={this.state.game} choice={this.choicesManager.choice} handleEvent={event => this.handleEvent(event)}></ChoiceDialog>
+      {this.state.over ? <Stats game={this.state.game} /> : ''}
     </div>
   }
 }
