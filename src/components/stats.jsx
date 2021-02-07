@@ -1,8 +1,5 @@
 import React from 'react'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoins, faBolt, faCartPlus } from '@fortawesome/free-solid-svg-icons'
-
 import { translate } from '../helpers/i18n'
 
 export default function Stats (props) {
